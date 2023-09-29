@@ -1,0 +1,204 @@
+{% extends 'main.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% comment %} {% for room in rooms  %}
+<div>
+    {% if request.user == room.host %}
+    <a href="{%url 'updateRoom' room.id%}">Editer</a>
+    <a href="{%url 'deleteRoom' room.id%}">Supprimer</a>
+    {% endif %}
+    <span> <a href="{%url 'profile' room.host.pk %}">{{room.host}} </a></span>
+    <h5>{{room.id}}-- <a href="{%url 'room' room.id %}">{{room.name}}</a> </h5>
+    <p>{{room.description|truncatewords:15}} </p>
+    <hr>
+    
+</div> 
+    {% endfor %} {% endcomment %}
+
+{% block content %}
+
+    {% if page != 'deleteRoom' %}
+<div class="all-content-wrapper">
+    {% comment %} <div class="product-status mg-b-30">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="product-status-wrap">
+                        <h4>Liste des titres</h4>
+                     
+                      {% if  user.is_authenticated%}
+                      <div class="add-product">
+                          <a href="{%url 'room_creat' user.pk %}">Créer un sujet</a>
+                      </div>
+                      {% endif %}
+                    
+                     
+                        <table>
+                            <tr>
+                               
+                                <th>Photos</th>
+                                <th>Utilisateurs</th>
+                                <th>Status</th>
+                                <th>Titres</th>
+                                
+                                <th>Descriptions</th>
+                                <th>Publié</th>
+                                <th>Actions</th>
+                            </tr>
+                            {% if messages %}
+                            {% for m in messages %}
+                            <p style="color: aquamarine;">{{m}}</p>
+                            {% endfor %}
+                            {% endif %}
+                            
+                            {% for liste in rooms.object_list  %}
+                            <tr>
+                                
+                                
+                                <td><img src="{{liste.user.image.url}}" width="70px" height="auto" alt=""></td>
+                                <td><a href="{%url 'UserProfile' liste.pk %}" style="color:chartreuse;">{{liste.user.email}}</a></td>
+                                {% if liste.user.is_authenticated %}
+                                <td>En ligne</td>
+                                {% else %}
+                                <td>Off</td>
+                                {% endif %}
+                                <td>{{liste.name}}</td>
+                                {% comment %} <td>
+                                    <button class="pd-setting">Active</button>
+                                </td> {% endcomment %}
+                                
+                                {% comment %} <td>{{liste.description|truncatewords:3}}</td>
+                                
+                                <td>Il y a {{liste.created|timesince}} </td>
+                                <td>
+                                    {% if request.user == liste.user %}
+                                    <a href="{%url 'updateRoom' liste.pk %}"><button data-toggle="tooltip" title="Edit" class="pd-setting-ed"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button></a>
+                                    <a href="{%url 'deleteRoom' liste.pk %}"><button data-toggle="tooltip" title="Trash" class="pd-setting-ed"><i class="fa fa-trash-o" aria-hidden="true"></i></button></a>
+                                    {% endif %}
+                                </td>
+                                
+                            </tr>
+                            {% empty %}
+                            <tr><td style="color: aquamarine;">Pas de données</td></tr>
+                            {% endfor %}
+                            
+                            
+                            
+                           
+                        </table>
+                        <div class="custom-pagination">
+                            <ul class="pagination">
+                                {% if rooms.has_previous %}
+                                <li class="page-item"><a class="page-link" href="{%url 'home'%}?page={{rooms.previous_page_number}}">Retour</a></li>
+                                {% endif %}
+                                {% for num_page in rooms.paginator.page_range  %}
+                                {% if page.number == num_page %}
+                                <li  class="page-item  active" aria-current="page"><a  class="page-link" href="{%url 'home'%}?page={{num_page}}">{{num_page}} </a></li>
+                                {% else %}
+                                <li class="page-item" aria-current="page"><a class="page-link" href="{%url 'home'%}?page={{num_page}}">{{num_page}} </a></li>
+                                {% endif %}
+                                {% endfor %}
+                                {% if rooms.has_next %}
+                                <li class="page-item"><a class="page-link" href="{%url 'home'%}?page={{rooms.next_page.number}}">Suivant</a></li>
+                                {% endif %}
+                                
+                            </ul>
+                        </div> 
+                    </div>
+                </div>
+            </div>
+        </div> {% endcomment %}
+    {% comment %} </div> {% endcomment %}
+
+   
+ 
+    <div class="product-status mg-b-30">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="product-status-wrap">
+                        <h4 class="text-center">Liste des titres</h4>
+                     
+                      {% if  user.is_authenticated%}
+                      <div class="add-product">
+                          <a href="{%url 'room_creat' request.user.pk %}">Créer un sujet</a>
+                      </div>
+                      {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="author-area-pro">
+        <div class="container-fluid">
+            <div class="row">
+                {% for room in rooms.object_list  %}
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12" id="search-results">
+                    <div class="author-widgets-single res-mg-t-30">
+                        <div class="author-wiget-inner">
+                            <div class="perso-img">
+                                <a href="{%url 'UserProfile' room.id %}"><img src="{{room.user.image.url}}" class="img-circle circle-border m-b-md" width="96px" alt="profile"></a>
+                            </div>
+                            <div class="persoanl-widget-hd persoanl1-widget-hd">
+                                <a href="{%url 'room_one' room.id %}"><h2>{{room.user.first_name}} </h2></a>
+                                {% if room.user.fonction %}
+                                <p style="color: aquamarine;">{{room.user.fonction}}</p>
+                                    {% else %}
+                                    <p style="color: aquamarine;">Pas de fonction inscrite</p>
+                                {% endif %}
+                            </div>
+                            <div class="social-widget-result social-widget1-result">
+                                <span>100 Tweets</span> |
+                                <span>350 Participants</span> |
+                                <span>610 J'aime</span>
+                            </div>
+                        </div>
+                        <div class="widget-text-box">
+                            <a href="{%url 'UserProfile' room.pk %}" style="color: #fff;"><h5>{{room.name|truncatewords:6}} </h5></a>
+                            <p>{{room.description|truncatewords:7}} </p>
+                            <div class="text-right like-love-list">
+                                <a class="btn btn-xs btn-white"><i class="fa fa-thumbs-up"></i> Like </a>
+                                <a class="btn btn-xs btn-primary"><i class="fa fa-heart"></i> J'aime</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <h4 style="color: aquamarine;">Pas de données</h4>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% else %}
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="product-status-wrap">
+                    <h4 class="text-center">Voulez-vous vraiment supprimer <strong style="color: aquamarine;">"{{t}}"</strong> ?</h4>
+                 
+                  {% if  user.is_authenticated%}
+                  <div class="add-product">
+                      <a href="{{request.META.HTTP_REFERER}}">Retour</a>
+                  </div>
+                  {% endif %}
+                  <form method="post">
+                    {% csrf_token %}
+                    
+                    <div class="form-group">
+                        <input type="submit" class="form-control btn btn-input col-4" value="Confirmer">
+                    </div>
+                </form><br>
+                 
+                   
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    {% endif %}
+
+
+{% endblock content %}
+
+    

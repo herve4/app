@@ -1,0 +1,224 @@
+{% include 'main.html' %}
+{% load static %}
+
+{% include 'navbar.html' %}
+{% include 'barNav.html' %}
+{% include 'barTitle.html' %}
+<style>
+    #id_comment{
+        color: #fff;
+    }
+    label{
+        color: #fff;
+    }
+</style>
+
+{% comment %} {% block content %}
+<style>
+    .room-container{
+            display: grid;
+            grid-template-columns: 3fr 1fr;
+        }
+    </style>
+
+
+<div class="room-container">
+    <div>
+        <h1>{{room.name}} </h1>
+        <p>{{room.description}} </p><hr>
+            <div class="comment-wrapper">
+                <h3>Conversations</h3><hr>
+                <div>
+                    {% for message in messageRoom  %}
+                            {% if request.user == message.user %}
+                            <small>@{{message.user}} Il y a {{message.creat|timesince}} <a href="{%url 'deleteMessage' message.id %}">Supprimer</a> </small>
+                            <p>{{message.body}} </p><hr>
+                            {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+            {% if request.user.is_authenticated %}
+            <div class="comment-form">
+                <form method="post">
+                    {% csrf_token %}
+                    <input type="text" name="body" placeholder="Ecrire votre message ici..." >
+                </form>
+            </div>
+            {% endif %}
+    </div>
+    <div>
+        <h3>Participants</h3><hr>
+        {% for participant in participants  %}
+            <p>@{{participant.username}} </p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock  %} {% endcomment %}
+
+
+
+{% block content %}
+
+<div class="all-content-wrapper">
+    
+    <div class="blog-details-area mg-tb-15">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="blog-details-inner">
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <div class="latest-blog-single blog-single-full-view">
+                                    <div class="blog-image">
+                                        <a href=""><img src="{{room.image.url}}" alt=""  />
+                                            </a>
+                                           
+                                        <div class="blog-date">
+                                            <p><span class="blog-day"></span></p>
+                                        </div>
+                                    </div>
+                                    <div class="blog-details blog-sig-details">
+                                        <div class="details-blog-dt blog-sig-details-dt">
+                                            <span><a href="{%url 'UserProfile' room.pk %}" style="color: aquamarine;"><i class="fa fa-user"></i>Par @{{room.user.email}}</a></span>
+                                            <span><a href="#" style="color: aquamarine;"><i class="fa fa-heart"></i> 20 Likes</a></span>
+                                            <span><a href="#" style="color: aquamarine;"><i class="fa fa-comments-o"></i> {{counts}} Commentaire{{counts|pluralize:"s"}} </a></span>
+                                            <span><a href="{%url 'room' user.id %}?compte={{room.user.email}}&theme={{room.theme}}" style="color: aquamarine;"><i class="fa fa-comments-o"></i> @{{room.theme}} </a></span>
+                                        </div>
+                                        <h1 ><a class="blog-ht" href="#" style="color: antiquewhite;">{{room.name}}</a></h1>
+                                        <p style="color: antiquewhite;">{{room.description}}</p>
+
+                                        
+                                        <div class="blog-area mg-tb-15">
+                                            <div class="container-fluid">
+                                                <div class="row">
+                                                    <h2 class="text-center text-warning">Personnes qui aiment ce sujet</h2>
+                                                    {% for sujetParts in participantss %}
+                                                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                                                        <div class="hpanel blog-box mg-t-30">
+                                                            <div class="panel-heading custom-blog-hd">
+                                                                <div class="media clearfix">
+                                                                    <a class="pull-left">
+                                                                            <img class="img-circle" src="{{sujetParts.image.url}}" width="50px" alt="profile-picture">
+                                                                        </a>
+                                                                    <div class="media-body blog-std">
+                                                                        <p>Aimé par : <a href="{%url 'UserProfile' sujetParts.pk %}"><span class="font-bold"><strong>@{{sujetParts.username}} </strong></span></a> </p>
+                                                                        {% if sujetParts.fonction %}
+                                                                        <p class="text-muted">{{sujetParts.fonction}} </p>
+                                                                        {% else %}
+                                                                        <p class="text-muted"></p>
+                                                                        {% endif %}
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="panel-body blog-pra">
+                                                                <div class="blog-img">
+                                                                    <img src="{{user.image.url}}" alt="" />
+                                                                   
+                                                                </div>
+                                                                
+                                                            </div>
+                                                            {% comment %} <div class="panel-footer">
+                                                                <span class="pull-right"><i class="fa fa-comments-o"> </i> {{countParticipant}} commentaire{{countParticipant|pluralize:"s"}} </span>
+                                                                <i class="fa fa-eye"> </i> 142 views
+                                                            </div> {% endcomment %}
+                                                        </div>
+                                                    </div>
+                                                    {% empty %}
+                                                    <p>Pas de participants pour le moment !</p>
+                                                    {% endfor %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <div class="comment-head">
+                                    <h3 style="color: antiquewhite;">Commentaires</h3>
+                                </div>
+                            </div>
+                        </div>
+
+                       
+                       
+                       {% for messageRoo in messagess %}
+                            {% for im in img %}
+                            <div class="row">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <div class="user-comment">
+                                        <img src="{{messageRoo.user.image.url}}" alt="" width="70px" />
+                                        <div class="comment-details">
+                                            <h4 style="color: aliceblue;">@{{messageRoo.user.email}} Il y a {{messageRoo.creat|timesince}} </h4>
+                                            <p style="color: aliceblue;">{{messageRoo.body}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <div class="user-comment admin-comment">
+                                    <img src="{{request.user.image.url}}" width="40px" height="auto" alt="" />
+                                    <div class="comment-details">
+                                        <h4 style="color:aquamarine;">@{{request.user}} <a href="#coment"><span class="comment-replay" style="color: #fff;">Répondre</span></a></h4>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% empty %}
+                        <p style="color: aliceblue;">Pas de commentaires</p>
+                           {% endfor %}
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <div class="lead-head">
+                                    <h3 style="color: aliceblue;">Laisser un commentaire</h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="coment-area">
+                                <form method="post" action="{%url 'room_one' room.id  %}" id="coment">
+                                    {% csrf_token %}
+                                    {% if messages %}
+                                    {% for message in messages %}
+                                        <p style="color: aquamarine;" class="text-center">{{message}} </p>
+                                    {% endfor %}
+                                    {% endif %}
+
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                       <textarea class="form-control"  cols="30" rows="10" id="id_comment" placeholder="Message" name="commment"></textarea>
+                                        
+                                         {% comment %} {{formComment}} {% endcomment %}
+                                        <input type="submit" value="Envoyer" />
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+    
+    <div class="footer-copyright-area">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="footer-copy-right">
+                        <p>Copyright © 2018 <a href="https://colorlib.com/wp/templates/">Colorlib</a> All rights reserved.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+
+{% include 'js.html' %}
+{% endblock content %}

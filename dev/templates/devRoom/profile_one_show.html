@@ -1,0 +1,202 @@
+
+{% load static %}
+{% include 'main.html' %}
+{% include 'navbar.html' %}
+{% include 'barNav.html' %}
+{% include 'barTitle.html' %}
+
+
+{% block content %}
+ <!-- Single pro tab start-->
+<div class="all-content-wrapper">
+ <div class="single-product-tab-area mg-t-0 mg-b-30">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="single-product-pr">
+                    <div class="row">
+                        <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
+                            <div id="myTabContent1" class="tab-content">
+                                
+                                <div class="product-tab-list tab-pane fade active in" id="single-tab1">
+                                    <img src="{{img2.image.url}}" alt="" />
+                                </div>
+                                
+                            </div>
+                            <hr style="color: aqua;">
+                            <h3 style="color: aqua;">Sujets traités</h3>
+                            
+                            <a href="{%url 'room_one' user.pk %}?compte={{user.user.username}}&theme={{user.theme}}"><p class="btn btn-primary" style="color: #fff;">{{sujet_en_traiter}} </p></a>
+                            <div class="clear"></div><br>
+                            
+                            <hr style="color: aqua;">
+                            <h3 style="color: aqua;">Sujets en relation</h3>
+                            {% for suj in SER  %}
+                            <a href="{%url 'room_one' suj.pk %}?compte={{suj.user.username}}&theme={{suj.theme}}"><p class="btn btn-primary" style="color: #fff;">{{suj.name}} </p></a>
+                            <div class="clear"></div><br>
+                            {% endfor %}
+                            <hr style="color: aqua;">
+                            <h3 style="color: aqua;">Participants de ce sujet</h3>
+                       
+                                <ul id="single-product-tab">
+                                
+                                
+                                {% for part in parts %}
+                                
+                                <li>
+                                    {% if request.user != part.image %}
+                                    <a href="{%url 'UserProfile' user.pk %}"><img src="{{part.image.url}}" alt="" /></a>
+                                    <div class="clear"></div><br>
+                                    {% endif %}
+                                </li>
+                                {% empty %}
+                                <p style="color: #fff;">Pas de participants</p>
+                            
+                                {% endfor %} 
+                                
+                                
+                                </ul>
+                                
+                                
+                            
+                           
+                        </div>
+                        
+                        <div class="col-lg-7 col-md-7 col-sm-7 col-xs-12">
+                            <div class="single-product-details res-pro-tb">
+                                
+                                <h1 style="color: chartreuse;">{{user.user.email|lower}} </h1>
+                               
+                                <div class="m-t-10">
+                                    <div class="txt-primary f-18 f-w-600">
+                                        <p style="color: chartreuse;">Laissez-moi un message</p>
+                                    </div>
+                                </div>
+                               <form method="post" action="{%url 'UserProfile' user.id %}">
+                                {% csrf_token %}
+                                <div class="input-group mg-b-15 mg-t-15">
+                                    <span class="input-group-addon"><i class="fa fa-edit" aria-hidden="true"></i></span>
+                                    <textarea  class="form-control" name="com" placeholder="Message ici..." ></textarea>
+                                   
+                                </div>
+                                
+                                <div>
+                                
+                                </div>
+                                <div class="clear"></div>
+                                {% if request.user.is_authenticated %}
+                                <button type="submit" class="btn btn-default">Envoyer</button>
+                                {% else %}
+                                <a href="{%url 'login' %}"><p style="color: aquamarine;">Veuillez vous connecter d'abord avant d'envoyer un message !</p></a>
+                                {% endif %}
+                               </form>
+                                <div class="clear"></div><hr>
+                                <div class="m-t-10">
+                                    <div class="txt-primary f-18 f-w-600">
+                                        <p style="color: chartreuse;">Si vous aimez mes sujets, laissez une étoile:</p>
+                                    </div>
+                                </div>
+                                <div class="stars stars-example-css detail-stars">
+                                    <div class="review-rating">
+                                        <fieldset class="rating">
+                                            <input type="radio" id="star5" name="rating" value="5">
+                                            <label class="full" for="star5"></label>
+                                            <input type="radio" id="star4half" name="rating" value="4 and a half">
+                                            <label class="half" for="star4half"></label>
+                                            <input type="radio" id="star4" name="rating" value="4">
+                                            <label class="full" for="star4"></label>
+                                            <input type="radio" id="star3half" name="rating" value="3 and a half">
+                                            <label class="half" for="star3half"></label>
+                                            <input type="radio" id="star3" name="rating" value="3">
+                                            <label class="full" for="star3"></label>
+                                            <input type="radio" id="star2half" name="rating" value="2 and a half">
+                                            <label class="half" for="star2half"></label>
+                                            <input type="radio" id="star2" name="rating" value="2">
+                                            <label class="full" for="star2"></label>
+                                            <input type="radio" id="star1half" name="rating" value="1 and a half">
+                                            <label class="half" for="star1half"></label>
+                                            <input type="radio" id="star1" name="rating" value="1">
+                                            <label class="full" for="star1"></label>
+                                            <input type="radio" id="starhalf" name="rating" value="half">
+                                            <label class="half" for="starhalf"></label>
+                                        </fieldset>
+                                    </div>
+                                    <div class="clear"></div>
+                                </div>
+                               
+                                <div class="m-t-10">
+                                    <div class="txt-primary f-18 f-w-600">
+                                        <p style="color: chartreuse;">Mon profil</p><hr>
+                                      
+                                      {% for info in infos %}
+                                      {% if info.fonction %}
+                                      <p style="color: #fff;"><strong style="color: aqua;">Fonction :</strong> {{info.fonction}} </p><hr>
+                                      {% endif %}
+                                      {% if info.competence1 %}
+                                      <p style="color: #fff;">  {{info.competence1}} </p><hr>
+                                      {% endif %}
+                                      {% if info.competence2 %}
+                                      <p style="color: #fff;">{{info.competence2}} </p><hr>
+                                      {% endif %}
+                                      {% if info.competence3 %}
+                                      <p style="color: #fff;">{{info.competence3}} </p><hr>
+                                      {% endif %}
+                                      {% if info.Experience %}
+                                      <p style="color: #fff;">Année d'expérience : <span style="color: aquamarine;">{{info.Experience}} ans</span></p><hr>
+                                      {% endif %}
+                                      {% empty %}
+                                      <p style="color: #fff;">Pas d'informations sur vous</p>
+                                      {% endfor %}
+                                        
+                                    </div>
+                                </div>
+                                        <div class="pro-viwer">
+                                            <a href="#"><i class="fa fa-heart"></i></a>
+                                            <a href="#"><i class="fa fa-eye"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="clear"></div>
+                                    <div class="single-social-area">
+                                        <h3>Partager sur</h3>
+                                        <a href="#"><i class="fa fa-facebook"></i></a>
+                                        <a href="#"><i class="fa fa-google-plus"></i></a>
+                                        <a href="#"><i class="fa fa-feed"></i></a>
+                                        <a href="#"><i class="fa fa-twitter"></i></a>
+                                        <a href="#"><i class="fa fa-linkedin"></i></a>
+                                    </div>
+                                </div><br>
+                                
+                            </div><hr>
+                            <div class="single-pro-cn">
+                                <h3>Message</h3>
+                               
+                                <div style="background- color:#12192c;">
+                                {% if request.user.is_authenticated %}
+                                {% for conversation in conversations  %}
+                                
+                                <a href="{%url 'UserProfile' user.id %}"><h4 class="btn btn-default">@{{conversation.user}} </h4></a>
+                                <p>{{conversation.body}} , <span style="color: aqua;">il y a {{conversation.creat|timesince}}</span> </p>
+                                    {% empty %}
+                                    <p style="color: aquamarine;">Pas de commentaires</p>
+                                {% endfor %}
+                                    {% else %}
+                                    <p style="color: #fff;">Connectez-vous pour voir les messages !</p>
+                                {% endif %}
+                                </div><br>
+                                
+                                
+
+                            
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<!-- Single pro tab End-->
+{% include 'js.html' %}
+{% endblock  %}

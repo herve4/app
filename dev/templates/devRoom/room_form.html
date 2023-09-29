@@ -1,0 +1,126 @@
+{% extends 'main.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% block content %}
+    {% comment %} <h3>Nouveau sujet</h3>
+
+    <form method="post">
+        {% csrf_token %}
+        {{form.as_p}}
+        <a type="button" href="{{request.META.HTTP_REFERER}}">Retour</a>
+        <input type="submit" value="Valider">
+        
+    </form> {% endcomment %}
+
+{% if page == 'room_creat' %}
+    
+<div class="color-line"></div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="back-link back-backend">
+                <a href="{% url 'home'%}" class="btn btn-primary">Aller au tableau de bord</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12"></div>
+        <div class="col-md-4 col-md-4 col-sm-4 col-xs-12">
+            <div class="text-center m-b-md custom-login">
+                <h3 class="text-warning">Nouveau sujet</h3>
+                {% if messages %}
+                {% for m in messages %}
+                <p style="color: aquamarine;">{{m}}</p>
+                {% endfor %}
+                {% endif %}
+            </div>
+            <div class="hpanel">
+                <div class="panel-body">
+                    <form method="post" id="loginForm" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            {{SujetForms.theme}}
+                        </div>
+                        <div class="form-group">
+                            {{SujetForms.name}}
+                        </div>
+                        <div class="form-group">
+                            {{SujetForms.description}}
+                        </div>
+                        <div class="form-group">
+                            {{SujetForms.image}}
+                        </div>
+                      
+                        <h4 class="text-center text-dark">Ajouter un ou des participant(s) à ce sujet </h4>
+                       
+                            <div class="form-group">
+                                {{ SujetForms.participate.errors}}
+                                {% render_field  SujetForms.participate class="form-control" %}
+                            </div>
+                        
+                        <button class="btn btn-success btn-block loginbtn">Créer</button>
+                        
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12"></div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 col-md-12 col-sm-12 col-xs-12 text-center">
+            <p>Copyright © 2023 <a href="https://colorlib.com/wp/templates/">@dev</a> Tous droits réservés.</p>
+        </div>
+    </div>
+</div>
+{% else %}
+<div class="color-line"></div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="back-link back-backend">
+                <a href="{{request.META.HTTP_REFERER}}" class="btn btn-primary">Aller au tableau de bord</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12"></div>
+        <div class="col-md-4 col-md-4 col-sm-4 col-xs-12">
+            <div class="text-center m-b-md custom-login">
+                <h3 class="text-warning">Modification</h3>
+                {% if messages %}
+                {% for m in messages %}
+                <p style="color: aquamarine;">{{m}}</p>
+                {% endfor %}
+                {% endif %}
+            </div>
+            <div class="hpanel">
+                <div class="panel-body">
+                    <form method="post" id="loginForm">
+                        {% csrf_token %}
+                        <div class="form-group">
+                         
+                            {{form.as_p}}
+                        </div>
+                      
+                       
+                       
+                        <button class="btn btn-success btn-block loginbtn">Enregistrer</button>
+                        <a href="{%url 'room_creat' request.user.pk %}" class="btn btn-default btn-block">Créer un nouveau sujet</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12"></div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 col-md-12 col-sm-12 col-xs-12 text-center">
+            <p>Copyright © 2023 <a href="https://colorlib.com/wp/templates/">@dev</a> Tous droits réservés.</p>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock  %}

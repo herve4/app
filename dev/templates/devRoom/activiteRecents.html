@@ -1,0 +1,12 @@
+{% load static %}
+<h3>Activités récentes</h3><hr>
+{% for message in msg %}
+{% comment %} {% if request.user == message.user %} {% endcomment %}
+    <div>
+        <small><a href="{%url 'profile' message.user.id %}">@{{message.user}}</a> | {{message.creat|timesince}} </small><br>
+        <small>Réponse pour : "<strong>{{message.room}}</strong>" </small><br>
+        <small>{{message.body|truncatewords:10}}<a href="{%url 'deleteMessage' message.id %}">Supprimer</a> </small>
+        <hr>
+    </div>
+    {% comment %} {% endif %} {% endcomment %}
+{% endfor %}

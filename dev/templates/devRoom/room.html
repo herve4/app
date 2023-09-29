@@ -1,0 +1,243 @@
+{% include 'main.html' %}
+{% load static %}
+
+{% include 'navbar.html' %}
+{% include 'barNav.html' %}
+{% include 'barTitle.html' %}
+
+{% comment %} {% block content %}
+<style>
+    .room-container{
+            display: grid;
+            grid-template-columns: 3fr 1fr;
+        }
+    </style>
+
+
+<div class="room-container">
+    <div>
+        <h1>{{room.name}} </h1>
+        <p>{{room.description}} </p><hr>
+            <div class="comment-wrapper">
+                <h3>Conversations</h3><hr>
+                <div>
+                    {% for message in messageRoom  %}
+                            {% if request.user == message.user %}
+                            <small>@{{message.user}} Il y a {{message.creat|timesince}} <a href="{%url 'deleteMessage' message.id %}">Supprimer</a> </small>
+                            <p>{{message.body}} </p><hr>
+                            {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+            {% if request.user.is_authenticated %}
+            <div class="comment-form">
+                <form method="post">
+                    {% csrf_token %}
+                    <input type="text" name="body" placeholder="Ecrire votre message ici..." >
+                </form>
+            </div>
+            {% endif %}
+    </div>
+    <div>
+        <h3>Participants</h3><hr>
+        {% for participant in participants  %}
+            <p>@{{participant.username}} </p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock  %} {% endcomment %}
+
+
+
+{% block content %}
+
+<div class="all-content-wrapper">
+   
+    <div class="breadcome-area">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="breadcome-list single-page-breadcome">
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <div class="breadcome-heading">
+                                    <form method="get" role="search" class="" action="{%url 'search' room.host.id  %}">
+                                        {% csrf_token %}
+                                        <input type="text" placeholder="Rechercher un titre..." class="form-control" name="t">
+                                       
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <ul class="breadcome-menu">
+                                    <li><a href="{%url 'home'%}">Accueil</a> <span class="bread-slash">/</span>
+                                    </li>
+                                    <li><span class="bread-blod"><a href="{%url 'UserProfile' room.host.id %}">Inbox</a></span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+</div>
+<div class="all-content-wrapper">
+    <div class="mailbox-area mg-tb-15">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-3 col-md-3 col-sm-3 col-xs-12">
+                    <div class="hpanel responsive-mg-b-30">
+                        <div class="panel-body">
+
+                            <ul class="mailbox-list">
+                                
+                                
+                                <li class="active">
+                                    <a href="{%url 'room' room.pk  %}">
+                                            <span class="pull-right">{{counts}}</span>
+                                            
+                                            <i class="fa fa-paperclip"></i> {{room.name|truncatewords:4}}
+                                            
+                                        </a>
+                                </li>
+                               
+                                    
+                               <hr>
+                               <h4 class="text-center">D'autres titres</h4><hr>
+                              
+                              {% for room in rooms  %}
+                              <li>
+                                  
+                                  <a href="{%url 'room' room.id  %}?room_name={{room.name}}">
+                                          <span class="pull-right"></span>
+                                          <i class="fa fa-paperclip"></i> {{room.name|truncatewords:3}}
+                                      </a> <hr>
+                                  
+                              </li>
+                              {% empty %}
+                              <li>Pas de titres</li>
+                              {% endfor %}
+                              
+                            </ul>
+                           
+                         
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-9 col-md-9 col-sm-9 col-xs-12">
+                    <div class="hpanel mg-b-15">
+                        <div class="panel-heading hbuilt mailbox-hd">
+                            <div class="text-center p-xs font-normal">
+                                <form method="get" action="{%url 'room' room.pk %}">
+                                    {% csrf_token %}
+                                    <div class="input-group">
+                                    
+                                        <input type="text" class="form-control input-sm" placeholder="Rechercher un nom ou message" name="m"> <span class="input-group-btn"> <button type="submit" class="btn btn-sm btn-default">Chercher
+                                        </button> </span>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-md-6 col-md-6 col-sm-6 col-xs-12 mg-b-15">
+                                    <div class="btn-group">
+                                        <a href="{% url 'room_one' room.host.id  %}"><button class="btn btn-default btn-sm"><i class="fa fa-edit"></i> Laissez un commentaire</button></a>
+                                        <button class="btn btn-default btn-sm"><i class="fa fa-eye"></i></button>
+                                        <button class="btn btn-default btn-sm"><i class="fa fa-exclamation"></i></button>
+                                        <button class="btn btn-default btn-sm"><i class="fa fa-trash-o"></i></button>
+                                        <button class="btn btn-default btn-sm"><i class="fa fa-check"></i></button>
+                                        <button class="btn btn-default btn-sm"><i class="fa fa-tag"></i></button>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-md-6 col-sm-6 col-xs-12 mailbox-pagination mg-b-15">
+                                    <div class="btn-group">
+                                        <button class="btn btn-default btn-sm"><i class="fa fa-arrow-left"></i></button>
+                                        <button class="btn btn-default btn-sm"><i class="fa fa-arrow-right"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="table-responsive">
+                               
+                                <table class="table table-hover table-mailbox">
+                                    {% if messages %}
+                                    {% for message in messages  %}
+                                            <p {% if messages.tag %} class="alert alert-{{messages.tag}}"{% endif %}>{{message}} </p>
+                                    {% endfor %}
+                                    {% endif %}
+                                    <tbody>
+                                    
+                                    
+                                    {% for messageRoo in message %}
+                                        
+                                    <tr>
+                                        
+                                        <td class="unread">
+                                            <div class="checkbox">
+                                                <input type="checkbox">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                        
+                                        <td><a href="{%url 'room_one' messageRoo.room.host.id  %}">{{messageRoo.user.username}} </a><span class="label label-warning">{{messageRoo.room.theme.name|truncatewords:1}} </span></td>
+                                        <td><a href="{%url 'room_one' messageRoo.room.id  %}">{{messageRoo.body|truncatewords:10}} </a>
+                                        </td>
+                                        <td></td>
+                                        <td class="text-right mail-date">{{messageRoo.creat}} </td>
+                                        
+                                    </tr>
+                                    
+                                    
+                                    
+                                </tr>
+                                {% empty %}
+                                <p>Pas de message</p>
+                                {% endfor %}
+                                        
+                                        
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="panel-footer">
+                            <i class="fa fa-eye"> </i> {{counts}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% comment %} Page Room_one de l'affichage de chaque titre {% endcomment %}
+  
+
+
+
+
+
+
+
+
+
+    
+    
+    <div class="footer-copyright-area">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="footer-copy-right">
+                        <p>Copyright © 2018 <a href="https://colorlib.com/wp/templates/">Colorlib</a> All rights reserved.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+
+{% include 'js.html' %}
+{% endblock content %}

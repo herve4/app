@@ -1,0 +1,478 @@
+{% load static %}
+{% if pages == 'home' %}
+<div class="all-content-wrapper">
+    <div class="breadcome-area">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="breadcome-list">
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <div class="breadcomb-wp">
+                                    <div class="breadcomb-icon">
+                                        <a href="{%url 'home' %}"><i class="icon nalika-home"></i></a>
+                                    </div>
+                                    <div class="breadcomb-ctn">
+                                        
+                                        {% if request.user.is_authenticated %}
+                                        {% if q %}
+                                        <h2>{{q}} </h2>
+
+                                        {% if messages %}
+                                        {% for message in messages %}
+                                        <p style="color: aquamarine;"><span class="bread-ntd">{{message}}</span></p>
+                                        {%endfor%}
+                                        {% endif %}
+                                        {% else %}
+                                        <h2>Tableau de bord</h2>
+                                        {% if request.user.username %}
+                                        <p>Bienvenue,  <span class="bread-ntd" style="color: aquamarine;">{{request.user.username}} </span></p>
+                                        {% else %}
+                                        <p>Bienvenue,  <span class="bread-ntd"><a href="{%url 'profile' request.user.pk %}" style="color: aquamarine;">Ajouetr un nom d'utilisateur</a></span></p>
+                                        {% endif %}
+                                        {% endif %}
+                                       
+                                            
+                                        {% elif q %}
+                                        <h2>{{q}} </h2>
+
+                                        {% if messages %}
+                                        {% for message in messages %}
+                                        <p style="color: aquamarine;"><span class="bread-ntd">{{message}}</span></p>
+                                        {%endfor%}
+                                        {% endif %}
+                                        
+                                        {% else %}
+                                        <h2>Tableau de bord</h2>
+                                        <p>Bienvenue,  <span class="bread-ntd"></span></p>
+                                        <span class="bread-ntd"><a href="{%url 'login'%}">Se connecter maintenant</a></span>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                               {% if request.user.is_authenticated %}
+                               <div class="breadcomb-report">
+                                <a href="{%url 'logoutUser' %}">
+                                    <button data-toggle="tooltip" data-placement="left" title="Se déconnecter" class="btn"><i class="icon nalika-download"></i></button>
+                                </a>
+                               
+                            </div>
+                               {% else %}
+                               <div class="breadcomb-report">
+                                <a href="{%url 'login'%}">
+                                    <button data-toggle="tooltip" data-placement="left" title="Se connecter" class="btn"><i class="icon nalika-download"></i></button>
+                                </a>
+                               
+                            </div>
+                               {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% if request.user.is_authenticated %}
+
+
+
+<div class="section-admin container-fluid">
+    <div class="row admin text-center">
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                    <div class="admin-content analysis-progrebar-ctn res-mg-t-15">
+                        <h4 class="text-left text-uppercase"><b>Utilisateurs</b></h4>
+                        <div class="row vertical-center-box vertical-center-box-tablet">
+                            <div class="col-xs-3 mar-bot-15 text-left">
+                                <label class="label bg-green">5% <i class="fa fa-level-up" aria-hidden="true"></i></label>
+                            </div>
+                            <div class="col-xs-9 cus-gh-hd-pro">
+                                <h2 class="text-right no-margin">{{UserCount}}</h2>
+                            </div>
+                        </div>
+                        <div class="progress progress-mini">
+                            <div style="width: 78%;" class="progress-bar bg-green"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12" style="margin-bottom:1px;">
+                    <div class="admin-content analysis-progrebar-ctn res-mg-t-30">
+                        <h4 class="text-left text-uppercase"><b>Titres crées</b></h4>
+                        <div class="row vertical-center-box vertical-center-box-tablet">
+                            <div class="text-left col-xs-3 mar-bot-15">
+                                <label class="label bg-red">7% <i class="fa fa-level-down" aria-hidden="true"></i></label>
+                            </div>
+                            <div class="col-xs-9 cus-gh-hd-pro">
+                                <h2 class="text-right no-margin">{{themeCount}}</h2>
+                            </div>
+                        </div>
+                        <div class="progress progress-mini">
+                            <div style="width: 38%;" class="progress-bar progress-bar-danger bg-red"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                    <div class="admin-content analysis-progrebar-ctn res-mg-t-30">
+                        <h4 class="text-left text-uppercase"><b>Conversations</b></h4>
+                        <div class="row vertical-center-box vertical-center-box-tablet">
+                            <div class="text-left col-xs-3 mar-bot-15">
+                                <label class="label bg-blue">3% <i class="fa fa-level-up" aria-hidden="true"></i></label>
+                            </div>
+                            <div class="col-xs-9 cus-gh-hd-pro">
+                                
+                                <h2 class="text-right no-margin">{{comment}}</h2>
+                                
+                            
+                            </div>
+                        </div>
+                        <div class="progress progress-mini">
+                            <div style="width: 60%;" class="progress-bar bg-blue"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                    <div class="admin-content analysis-progrebar-ctn res-mg-t-30">
+                        <h4 class="text-left text-uppercase"><b>Commentaires</b></h4>
+                        <div class="row vertical-center-box vertical-center-box-tablet">
+                            <div class="text-left col-xs-3 mar-bot-15">
+                                <label class="label bg-purple">10% <i class="fa fa-level-up" aria-hidden="true"></i></label>
+                            </div>
+                            <div class="col-xs-9 cus-gh-hd-pro">
+                                <h2 class="text-right no-margin">{{commentaires}}</h2>
+                            </div>
+                        </div>
+                        <div class="progress progress-mini">
+                            <div style="width: 60%;" class="progress-bar bg-purple"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% else %}
+
+<div class="section-admin container-fluid">
+    <div class="row admin text-center">
+        <div class="col-md-12">
+            <div class="row">
+                <marquee behavior="" direction="left"><h4 style="color: aquamarine;">Connectez-vous pour voir les données !</h4></marquee>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endif %}
+</div>
+{% elif pages == 'profile' %}
+    <div class="all-content-wrapper">
+        <div class="breadcome-area">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div class="breadcome-list">
+                            <div class="row">
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                    <div class="breadcomb-wp">
+                                        <div class="breadcomb-icon">
+                                            <a href="{%url 'home' %}"><i class="icon nalika-home"></i></a>
+                                        </div>
+                                        <div class="breadcomb-ctn">
+                                            
+                                            {% if request.user.is_authenticated %}
+                                            {% if q %}
+                                            <h2>{{q}} </h2>
+    
+                                            {% if messages %}
+                                            {% for message in messages %}
+                                            <p style="color: aquamarine;"><span class="bread-ntd">{{message}}</span></p>
+                                            {%endfor%}
+                                            {% endif %}
+                                            {% else %}
+                                            <h2>Mon profil</h2>
+                                            {% if request.user.username %}
+                                            <p>En ligne :<span class="bread-ntd" style="color: aquamarine;">{{request.user.username}} </span></p>
+                                            {% else %}
+                                            <p>Vérifiez votre informations :<span class="bread-ntd"><a href="{%url 'profile' request.user.pk%}" style="color: aquamarine;">profil</a></span></p>
+                                            {% endif %}
+                                            {% endif %}
+                                           
+                                                
+                                            {% elif q %}
+                                            <h2>{{q}} </h2>
+    
+                                            {% if messages %}
+                                            {% for message in messages %}
+                                            <p style="color: aquamarine;"><span class="bread-ntd">{{message}}</span></p>
+                                            {%endfor%}
+                                            {% endif %}
+                                            
+                                            {% else %}
+                                            <h2>Détails utilisateur</h2>
+                                            <p>Bienvenue sur notre plateforme <span class="bread-ntd"></span></p>
+                                            <span class="bread-ntd"><a href="{%url 'login'%}">Se connecter maintenant</a></span>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                   {% if request.user.is_authenticated %}
+                                   <div class="breadcomb-report">
+                                    <a href="{%url 'logoutUser' %}">
+                                        <button data-toggle="tooltip" data-placement="left" title="Se déconnecter" class="btn"><i class="icon nalika-download"></i></button>
+                                    </a>
+                                   
+                                </div>
+                                   {% else %}
+                                   <div class="breadcomb-report">
+                                    <a href="{%url 'login'%}">
+                                        <button data-toggle="tooltip" data-placement="left" title="Se connecter" class="btn"><i class="icon nalika-download"></i></button>
+                                    </a>
+                                   
+                                </div>
+                                   {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+   
+    </div>
+    {% elif pages == 'UserProfile' %}
+    <div class="all-content-wrapper">
+        <div class="breadcome-area">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div class="breadcome-list">
+                            <div class="row">
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                    <div class="breadcomb-wp">
+                                        <div class="breadcomb-icon">
+                                            <a href="{%url 'home' %}"><i class="icon nalika-home"></i></a>
+                                        </div>
+                                        <div class="breadcomb-ctn">
+                                            
+                                            {% if request.user.is_authenticated %}
+                                            {% if q %}
+                                            <h2>{{q}} </h2>
+    
+                                            {% if messages %}
+                                            {% for message in messages %}
+                                            <p style="color: aquamarine;"><span class="bread-ntd">{{message}}</span></p>
+                                            {%endfor%}
+                                            {% endif %}
+                                            {% else %}
+                                            <h2>Détails utilisateur</h2>
+                                            {% if request.user.username %}
+                                            <p>En ligne :<span class="bread-ntd" style="color: aquamarine;">{{request.user.username}} </span></p>
+                                            {% else %}
+                                            <p>Configurer votre profil :<span class="bread-ntd"><a href="{%url 'profile' request.user.pk%}" style="color: aquamarine;">profil</a></span></p>
+                                            {% endif %}
+                                            {% endif %}
+                                           
+                                                
+                                            {% elif q %}
+                                            <h2>{{q}} </h2>
+    
+                                            {% if messages %}
+                                            {% for message in messages %}
+                                            <p style="color: aquamarine;"><span class="bread-ntd">{{message}}</span></p>
+                                            {%endfor%}
+                                            {% endif %}
+                                            
+                                            {% else %}
+                                            <h2>Détails utilisateur</h2>
+                                            <p>Bienvenue sur notre plateforme <span class="bread-ntd"></span></p>
+                                            <span class="bread-ntd"><a href="{%url 'login'%}">Se connecter maintenant</a></span>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                   {% if request.user.is_authenticated %}
+                                   <div class="breadcomb-report">
+                                    <a href="{%url 'logoutUser' %}">
+                                        <button data-toggle="tooltip" data-placement="left" title="Se déconnecter" class="btn"><i class="icon nalika-download"></i></button>
+                                    </a>
+                                   
+                                </div>
+                                   {% else %}
+                                   <div class="breadcomb-report">
+                                    <a href="{%url 'login'%}">
+                                        <button data-toggle="tooltip" data-placement="left" title="Se connecter" class="btn"><i class="icon nalika-download"></i></button>
+                                    </a>
+                                   
+                                </div>
+                                   {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+   
+    </div>
+
+    {% elif pages == 'room_one' %}
+    <div class="all-content-wrapper">
+        <div class="breadcome-area">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div class="breadcome-list">
+                            <div class="row">
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                    <div class="breadcomb-wp">
+                                        <div class="breadcomb-icon">
+                                            <a href="{%url 'home' %}"><i class="icon nalika-home"></i></a>
+                                        </div>
+                                        <div class="breadcomb-ctn">
+                                            
+                                            {% if request.user.is_authenticated %}
+                                            {% if q %}
+                                            <h2>{{q}} </h2>
+    
+                                            {% if messages %}
+                                            {% for message in messages %}
+                                            <p style="color: aquamarine;"><span class="bread-ntd">{{message}}</span></p>
+                                            {%endfor%}
+                                            {% endif %}
+                                            {% else %}
+                                            <h2>Détails sujet</h2>
+                                            {% if request.user.username %}
+                                            <p>En ligne :<span class="bread-ntd" style="color: aquamarine;">{{request.user.username}} </span></p>
+                                            {% else %}
+                                            <p>Configurer votre profil :<span class="bread-ntd"><a href="{%url 'profile' request.user.pk%}" style="color: aquamarine;">profil</a></span></p>
+                                            {% endif %}
+                                            {% endif %}
+                                           
+                                                
+                                            {% elif q %}
+                                            <h2>{{q}} </h2>
+    
+                                            {% if messages %}
+                                            {% for message in messages %}
+                                            <p style="color: aquamarine;"><span class="bread-ntd">{{message}}</span></p>
+                                            {%endfor%}
+                                            {% endif %}
+                                            
+                                            {% else %}
+                                            <h2>Tableau de bord</h2>
+                                            <p>Bienvenue sur notre plateforme  <span class="bread-ntd"></span></p>
+                                            <span class="bread-ntd"><a href="{%url 'login'%}">Se connecter maintenant</a></span>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                   {% if request.user.is_authenticated %}
+                                   <div class="breadcomb-report">
+                                    <a href="{%url 'logoutUser' %}">
+                                        <button data-toggle="tooltip" data-placement="left" title="Se déconnecter" class="btn"><i class="icon nalika-download"></i></button>
+                                    </a>
+                                   
+                                </div>
+                                   {% else %}
+                                   <div class="breadcomb-report">
+                                    <a href="{%url 'login'%}">
+                                        <button data-toggle="tooltip" data-placement="left" title="Se connecter" class="btn"><i class="icon nalika-download"></i></button>
+                                    </a>
+                                   
+                                </div>
+                                   {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+   
+    </div>
+    {% elif  pages == 'room'%}
+    <div class="all-content-wrapper">
+        <div class="breadcome-area">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div class="breadcome-list">
+                            <div class="row">
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                    <div class="breadcomb-wp">
+                                        <div class="breadcomb-icon">
+                                            <a href="{%url 'home' %}"><i class="icon nalika-home"></i></a>
+                                        </div>
+                                        <div class="breadcomb-ctn">
+                                            
+                                            {% if request.user.is_authenticated %}
+                                            {% if q %}
+                                            <h2>{{q}} </h2>
+    
+                                            {% if messages %}
+                                            {% for message in messages %}
+                                            <p style="color: aquamarine;"><span class="bread-ntd">{{message}}</span></p>
+                                            {%endfor%}
+                                            {% endif %}
+                                            {% else %}
+                                            <h2>Autre info sujet</h2>
+                                            {% if request.user.username %}
+                                            <p>Bienvenue,  <span class="bread-ntd" style="color: aquamarine;">{{request.user.username}} </span></p>
+                                            {% else %}
+                                            <p>Configurer votre profil :<span class="bread-ntd"><a href="{%url 'profile' request.user.pk%}" style="color: aquamarine;">profil</a></span></p>
+                                            {% endif %}
+                                            {% endif %}
+                                           
+                                                
+                                            {% elif q %}
+                                            <h2>{{q}} </h2>
+    
+                                            {% if messages %}
+                                            {% for message in messages %}
+                                            <p style="color: aquamarine;"><span class="bread-ntd">{{message}}</span></p>
+                                            {%endfor%}
+                                            {% endif %}
+                                            
+                                            {% else %}
+                                            <h2>Tableau de bord</h2>
+                                            <p>Bienvenue,  <span class="bread-ntd"></span></p>
+                                            <span class="bread-ntd"><a href="{%url 'login'%}">Se connecter maintenant</a></span>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                   {% if request.user.is_authenticated %}
+                                   <div class="breadcomb-report">
+                                    <a href="{%url 'logoutUser' %}">
+                                        <button data-toggle="tooltip" data-placement="left" title="Se déconnecter" class="btn"><i class="icon nalika-download"></i></button>
+                                    </a>
+                                   
+                                </div>
+                                   {% else %}
+                                   <div class="breadcomb-report">
+                                    <a href="{% url 'login'%}">
+                                        <button data-toggle="tooltip" data-placement="left" title="Se connecter" class="btn"><i class="icon nalika-download"></i></button>
+                                    </a>
+                                   
+                                </div>
+                                   {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+    </div>
+
+    
+{% endif %}
+

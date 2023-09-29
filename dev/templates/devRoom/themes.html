@@ -1,0 +1,11 @@
+{% load static %}
+<h3>Nos Thèmes</h3>
+            <hr>
+            
+<a href="{%url 'home'%}">Tous les thèmes</a>
+
+{% for topic in sujets %}
+<div>
+    <a href="{%url 'home'%}?q={{topic.name}}">{{topic.name}}</a>
+</div>
+{% endfor %}

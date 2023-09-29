@@ -1,0 +1,133 @@
+{% extends 'main.html' %}
+{% block content %}
+{% load static %}
+{% include 'navbar.html' %}
+{% include 'bartitle.html' %}
+
+
+
+<div class="all-content-wrapper">
+    <div class="single-product-tab-area mg-b-30">
+        <!-- Single pro tab review Start-->
+        <div class="single-pro-review-area">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div class="review-tab-pro-inner">
+                            <ul id="myTab3" class="tab-review-design">
+                                <li class="active"><a href="#description"><i class="icon nalika-edit" aria-hidden="true"></i> Editer le profil</a></li>                              
+                            </ul>
+                            <div id="myTabContent" class="tab-content custom-product-edit">
+                                <div class="product-tab-list tab-pane fade active in" id="description">
+                                    {% if messages %}
+                                    {% for message in messages %}
+                                    <p style="color: coral;">{{message}} </p>
+                                    {% endfor %}
+                                    {% endif %}
+                                    
+                                   <form method="post" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                    <div class="row">
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                            <div class="review-content-section">
+                                                <div class="input-group mg-b-pro-edt">
+                                                   {{form.username}}
+                                                </div>
+                                                <div class="input-group mg-b-pro-edt">
+                                                   {{form.email}}
+                                                 </div>
+                                                <div class="input-group mg-b-pro-edt">
+                                                  {{form.Telephone}}
+                                                 </div>
+                                                 <div class="input-group mg-b-pro-edt">
+                                                  {{form.adresse}}
+                                                 </div>
+                                                <div class="input-group mg-b-pro-edt">
+                                                    {{form.fonction}}
+                                                </div>
+                                                
+                                                <div class="input-group mg-b-pro-edt">
+                                                   "{{form.image}}
+                                                </div>
+                                               
+                                                <div class="input-group mg-b-pro-edt">
+                                                    {{form.Experience}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                            <div class="review-content-section">
+                                                <div class="input-group mg-b-pro-edt">
+                                                   {{form.competence1}}
+                                                </div>
+                                                <div class="input-group mg-b-pro-edt">
+                                                   {{form.competence2}}
+                                                </div>
+                                                <div class="input-group mg-b-pro-edt">
+                                                    {{form.competence3}}
+                                                </div>
+                                                <div class="input-group mg-b-pro-edt">
+                                                    {{form.competence4}}
+                                                </div>
+                                                <div class="input-group mg-b-pro-edt">
+                                                    {{form.competence5}}
+                                                </div>
+                                                <div class="input-group mg-b-pro-edt">
+                                                    {{form.competence6}}
+                                                </div>
+                                                
+                                            </div>
+                                        </div> 
+
+                                         {% comment %} <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                            <div class="review-content-section">
+                                             
+                                                <div class="input-group mg-b-pro-edt">
+                                                    <div class="form-control">
+                                                        {{form.as_p}}
+                                                    </div>
+                                            </div>
+                                        </div>  {% endcomment %}
+                                        
+                                        
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                            <div class="text-center custom-pro-edt-ds">
+                                                <button type="submit" class="btn btn-ctl-bt waves-effect waves-light m-r-10">Valider
+                                                    </button>
+                                               
+                                                    <a href="{%url 'home' %}" class="btn btn-ctl-bt waves-effect waves-light">Annuler</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                   </form>
+                                </div>
+                               
+                                </div>
+                            
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer-copyright-area">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="footer-copy-right">
+                        <p>Copyright © 2018 <a href="https://colorlib.com/wp/templates/">Colorlib</a> All rights reserved.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    {% endblock  %}
+   
+
+
+
+
